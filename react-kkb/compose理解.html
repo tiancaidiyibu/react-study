@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function f1 (){
+            console.log('f1')
+        }
+        function f2 (){
+            console.log('f2')
+        }
+        function f3 (){
+            console.log('f3')
+        }
+
+
+function compose(middlewares){
+    return function(){
+        return dispatch(0)
+        function dispatch(i){
+            let fn = middlewares[i]
+            if(!fn) Promise.resolve()
+            return Promise.resolve(
+                fn(function next(){
+                    return dispatch(i+1)
+                })
+            )
+        }
+    }
+}
+
+// function compose(middlewares){
+//     return function(){
+//         return dispatch(0)
+//         function dispatch(i){
+//             let fn = middlewares[i]
+//             if(!fn){
+//                 return Promise.resolve()
+//             }
+//             return Promise.resolve(
+//                 fn(function next(){
+//                     return dispatch(i + 1)
+//                 })
+//             )
+//         }
+//     }
+// }
+        // function compose(...func){
+        //     if(func.length===0){
+        //         return arg=>arg
+        //     }
+        //     if(func.length===1){
+        //         return func[0]
+        //     }
+        //     const newFunc = func.reduce((prev,v)=>{
+        //         console.log(prev)
+        //         console.log(v)
+        //         return function (...args){
+        //             return v(prev(...args))
+        //         }
+        //     }
+        //     )
+        //     console.log(newFunc)
+        //     return newFunc
+        // }
+        // const compose = (...func) => func.reduce((prev,cur)=>(...args)=>cur(prev(...args)))
+        // function compose(...[first,...other]){
+        //     return function(...args){
+        //         let ret = first(...args)
+        //         other.forEach(item=>{
+        //             ret = item(ret)
+        //         })
+        //         return ret
+        //     }
+        // }
+
+        compose(f1,f2,f3)()
+        // // 第一次循环
+        // function a (...args){
+        //     return f2(f1(...args))
+        // }
+        // //第二次循环
+        // function b (...args){
+        //     return f3(a(...args))
+        // }
+    </script>
+</body>
+</html>
